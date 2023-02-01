@@ -1,0 +1,75 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		<title>Self Assesment Form</title>
+		
+		<link rel="stylesheet" 
+			href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" 
+			integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" 
+			crossorigin="anonymous" />
+	</head>
+	<body>
+			
+		<div class="container">
+			<h3>Self Assessment of Property Tax Form</h3>
+			<hr/>
+			
+			<form th:action="@{/res}" th:object="${propertytax}" method="POST">
+				<label for="cars">Year of Assessment</label>
+				<input type="text" th:field="*{year}" class="form-control col-4 mb-4" placeholder="Enter Year" />
+				<label for="cars">Name of the Owner:</label>
+				<input type="text" th:field="*{ownerName}" class="form-control col-4 mb-4" placeholder="Enter OwnerName" />
+			<label for="cars">Email:</label>
+				<input type="text" th:field="*{email}" class="form-control col-4 mb-4" placeholder="Enter Email" />
+				<label for="cars">Address of the property:</label>
+				<textarea th:field="*{addressOfProperty}" class="form-control col-20 mb-4">
+Enter text here...</textarea>
+                 		<label for="cars">Zonal classification</label>
+				<div class="form-group blu-margin">
+    <select class="form-control" th:field="*{zonalClassification}"  id="dropOperator">
+    <option value="zone_A">zone_A</option>
+    <option value="zone_B">zone_B</option>
+    <option value="zone_C">zone_C</option>
+
+    </select>
+</div>
+            <label for="cars">Description of the Property</label>
+							<div class="form-group blu-margin">
+    <select class="form-control" th:field="*{descriptionOfTheProperty}"  id="dropOperator">
+    <option value="RCC building">RCC building</option>
+    <option value="RCC with cement/red oxide">RCC with cement/red oxide</option>
+    <option value="Tiled/Sheet of all kinds">Tiled/Sheet of all kinds</option>
+
+    </select>
+</div>
+				
+		        <label for="cars">Status</label>
+							<div class="form-group blu-margin">
+    <select class="form-control" th:field="*{status}"  id="dropOperator">
+    <option value="Tenanted">Tenanted</option>
+    <option value="Owner">Owner</option>
+   
+
+    </select>
+</div>		
+					<label for="cars">Building Constructed year</label>
+				<input type="text" th:field="*{constructedYear}" class="form-control col-4 mb-4" placeholder="Enter ConstructedYear" />
+				
+				<label for="cars">Built up Area</label>
+				<input type="text" th:field="*{buildupArea}" class="form-control col-4 mb-4" placeholder="Enter BuildupArea" />
+				
+				
+
+				
+				
+				<button type="submit" class="btn btn-primary col-2">PayTax</button>
+				 <a href="/home" id="cancel" name="cancel" class="btn btn-primary col-2">Cancel</a>
+				</div>
+				
+			</form>
+			<hr/>
+			
+		</div>
+		
+	</body>
+</html>

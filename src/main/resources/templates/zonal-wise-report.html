@@ -1,0 +1,69 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	
+	<head>
+	<title>Zone Wise Report</title>
+	
+	<link rel="stylesheet" 
+			type="text/css" 
+			href="https://cdn.datatables.net/v/bs4/dt-1.10.25/datatables.min.css" />
+	
+	<link rel="stylesheet" 
+			href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" 
+			integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" 
+			crossorigin="anonymous" />
+	</head>
+	
+	<body>
+	
+	<div class="container">
+	<h2>Zonal wise Report</h2>
+	<hr/>
+	
+	<table class="table">
+  <thead class="table-dark">
+    	<tr>
+	<th>Zone Name</th>
+	<th>Property Type</th>
+	<th>Amount Collected</th>
+	
+	</tr>
+  </thead>
+  <tbody>
+ 		<tr th:each="zo: ${zones}">
+	<td >Zone A</td>
+	<td >Owner</td>
+	<td th:text="${zo.zoneA_Owner_Amount}"></td></tr>
+	
+		<tr th:each="zo: ${zones}">
+		<td >Zone A</td>
+	<td >Tenanted</td>
+	<td th:text="${zo.zoneA_Tenant_Amount}"></td>
+	
+		<tr th:each="zo: ${zones}">
+	<td >Zone B</td>
+	<td >Owner</td>
+	<td th:text="${zo.zoneB_Owner_Amount}"></td></tr>
+	
+	<tr th:each="zo: ${zones}">
+		<td >Zone B</td>
+	<td >Tenanted</td>
+	<td th:text="${zo.zoneB_Tenant_Amount}"></td></tr>
+	
+		<tr th:each="zo: ${zones}">
+	
+	<td >Zone C</td>
+	<td >Owner</td>
+	<td th:text="${zo.zoneC_Owner_Amount}"></td></tr>
+	
+		<tr th:each="zo: ${zones}">
+		<td >Zone C</td>
+	<td >Tenanted</td>
+	<td th:text="${zo.zoneC_Tenant_Amount}"></td>
+	
+	</tr>
+  </tbody>
+</table>
+
+ <a href="/home" id="cancel" name="cancel" class="btn btn-primary col-2">Back to home page</a>
+	</DIV>
+	</body>
