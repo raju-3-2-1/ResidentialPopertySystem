@@ -1,4 +1,6 @@
-package com.epl.Residential_property_System.Entity;
+package com.epl.Residential_property_System.entity;
+
+import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,16 +11,22 @@ import javax.persistence.ManyToOne;
 @Entity
 public class ZonalDetails {
 
+
+	@ManyToOne
+	@JoinColumn(name="category_Id")
+	private Cat_Description cat_Description;
 	
+
 	@javax.persistence.Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int Id;
+	
+	
 	private String status;
 	
 	private String zone;
 	
 	private float value;
-	
 	
 	
 	
@@ -74,11 +82,23 @@ public class ZonalDetails {
 	
 	}
 
-	@ManyToOne
-	@JoinColumn(name="category_Id")
-	private Cat_Description cat_Description;
+	@Override
+	public int hashCode() {
+		return Objects.hash(Id, cat_Description, status, value, zone);
+	}
 
-
-
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ZonalDetails other = (ZonalDetails) obj;
+		return Id == other.Id && Objects.equals(cat_Description, other.cat_Description)
+				&& Objects.equals(status, other.status)
+				&& Float.floatToIntBits(value) == Float.floatToIntBits(other.value) && Objects.equals(zone, other.zone);
+	}
 	
 }

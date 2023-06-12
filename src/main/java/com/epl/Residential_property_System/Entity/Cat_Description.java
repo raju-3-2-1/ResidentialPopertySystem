@@ -1,20 +1,27 @@
-package com.epl.Residential_property_System.Entity;
+package com.epl.Residential_property_System.entity;
 
 import java.util.ArrayList;
 
 import java.util.Collection;
+import java.util.Objects;
+
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.OneToMany;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 
 import javax.persistence.Id;
 @Entity
 public class Cat_Description {
+
+	
+	
+	@JsonIgnore
+	@OneToMany(mappedBy="cat_Description")
+	private Collection<ZonalDetails> zonalDetails =new ArrayList<ZonalDetails>();
+	
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -52,9 +59,31 @@ public class Cat_Description {
 
 	private String Description_of_the_prop;
 	
-	@JsonIgnore
-	@OneToMany(mappedBy="cat_Description")
-	private Collection<ZonalDetails> zonalDetails =new ArrayList<ZonalDetails>();
+	@Override
+	public int hashCode() {
+		return Objects.hash(Description_of_the_prop, category_Id, zonalDetails);
+	}
+
+
+	 @Override
+	    public boolean equals(Object obj) 
+	    { 
+	    if(this == obj) 
+	    {
+	            return true; 
+	    }
+	    
+	        if(obj == null || obj.getClass()!= this.getClass()) 
+	        {
+	            return false; 
+	        }
+
+	        Cat_Description cd = (Cat_Description) obj;
+
+	        return (cd.category_Id== this.category_Id); 
+	    }
+	
+
 
 	public Cat_Description() {
 		

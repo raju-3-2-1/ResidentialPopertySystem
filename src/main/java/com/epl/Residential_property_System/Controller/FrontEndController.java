@@ -1,6 +1,6 @@
-package com.epl.Residential_property_System.Controller;
+package com.epl.Residential_property_System.controller;
 
-import java.util.List;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,11 +11,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.epl.Residential_property_System.Entity.PropertyTax;
-import com.epl.Residential_property_System.Entity.ZoneWiseReport;
-import com.epl.Residential_property_System.Repository.PropertyTaxRepository;
-import com.epl.Residential_property_System.Repository.ZonalWiseRepository;
-import com.epl.Residential_property_System.Service.TotalTaxCoumputationService;
+import com.epl.Residential_property_System.entity.PropertyTax;
+import com.epl.Residential_property_System.entity.ZoneWiseReport;
+import com.epl.Residential_property_System.exception.PropertTaxException;
+import com.epl.Residential_property_System.repository.PropertyTaxRepository;
+import com.epl.Residential_property_System.repository.ZonalWiseRepository;
+import com.epl.Residential_property_System.service.TotalTaxCoumputationService;
 
 
 
@@ -33,7 +34,7 @@ public class FrontEndController {
 	@GetMapping({"/home","/"})
 	public ModelAndView showEmployees() {
 		ModelAndView mov=new ModelAndView("home-page");
-	
+
 		return mov;
 	}
 	
@@ -46,8 +47,8 @@ public class FrontEndController {
 	}
 	
 	@PostMapping("/saveForm")
-	public String saveEmployee(@ModelAttribute PropertyTax prop) {
-		propRepo.save(prop);
+	public String saveEmployee(@ModelAttribute PropertyTax prop) throws PropertTaxException {
+		tot.savingFormDetails(prop);
 		return "redirect:/home";
 	}
 	@PostMapping({"/result","/res"})
@@ -62,7 +63,7 @@ public class FrontEndController {
 	@GetMapping("/zonalwisereport")
 	public ModelAndView showz() {
 		ModelAndView mov=new ModelAndView("zonal-wise-report");
-		ZoneWiseReport zz;
+		
 		ZoneWiseReport zones=zp.findById(25).get();
 		mov.addObject("zones",zones);
 		return mov;

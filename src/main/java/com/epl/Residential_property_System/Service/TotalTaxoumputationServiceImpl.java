@@ -1,19 +1,25 @@
-package com.epl.Residential_property_System.Service;
+package com.epl.Residential_property_System.service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.epl.Residential_property_System.Entity.Cat_Description;
-import com.epl.Residential_property_System.Entity.PropertyTax;
-import com.epl.Residential_property_System.Entity.ZonalDetails;
-import com.epl.Residential_property_System.Entity.ZoneWiseReport;
-import com.epl.Residential_property_System.Repository.Cat_DescriptionRepo;
-import com.epl.Residential_property_System.Repository.PropertyTaxRepository;
-import com.epl.Residential_property_System.Repository.ZonalDetailsRepo;
-import com.epl.Residential_property_System.Repository.ZonalWiseRepository;
+import com.epl.Residential_property_System.entity.Cat_Description;
+import com.epl.Residential_property_System.entity.PropertyTax;
+import com.epl.Residential_property_System.entity.ZonalDetails;
+import com.epl.Residential_property_System.entity.ZoneWiseReport;
+import com.epl.Residential_property_System.exception.PropertTaxException;
+import com.epl.Residential_property_System.repository.Cat_DescriptionRepo;
+import com.epl.Residential_property_System.repository.PropertyTaxRepository;
+import com.epl.Residential_property_System.repository.ZonalDetailsRepo;
+import com.epl.Residential_property_System.repository.ZonalWiseRepository;
 
 @Service
 public class TotalTaxoumputationServiceImpl implements TotalTaxCoumputationService {
@@ -36,6 +42,8 @@ public class TotalTaxoumputationServiceImpl implements TotalTaxCoumputationServi
 	double zoneAOwner; double zoneBOwner; double zoneCOwner;
 
 
+	
+	
 //code for getting the value rate of a particular zone	
 	public float compute(PropertyTax pro) {
 		List<ZonalDetails> zd= zonalDetailsRepo.findAll();
@@ -44,7 +52,7 @@ public class TotalTaxoumputationServiceImpl implements TotalTaxCoumputationServi
 		float vv=1;
 		int flag=0;
 		for(Cat_Description c:cd) {
-			if(c.getDescription_of_the_prop().contentEquals(pro.getDescriptionOfTheProperty()))
+			if(c.getDescription_of_the_prop().contentEquals(pro.getDescriptionOfTheProperty())) {
 				for(ZonalDetails z:zd) {
 				if(c.getCategory_Id()== z.getCat_Description().getCategory_Id()) {
 					if(z.getStatus().equals(pro.getStatus())  && z.getZone().equals(pro.getZonalClassification()) ) {
@@ -52,7 +60,7 @@ public class TotalTaxoumputationServiceImpl implements TotalTaxCoumputationServi
 						flag=1;
 						break;
 					}
-						 
+				}	 
 				}
 		}
 			if(flag==1) {
@@ -65,6 +73,7 @@ public class TotalTaxoumputationServiceImpl implements TotalTaxCoumputationServi
 
 //this  will update the zone wise collected tax amount 
 	
+	@Transactional
 	public void findZoneWiseReport(PropertyTax p) {
 		
 		
@@ -104,6 +113,7 @@ public class TotalTaxoumputationServiceImpl implements TotalTaxCoumputationServi
 	}
 	
 //using the value rate from compute() method , the below code will calculate tax 	
+	 @Transactional(readOnly = false,isolation = Isolation.READ_COMMITTED,propagation = Propagation.REQUIRED)
 	public double calculateTax(PropertyTax pr) {
 		
 		double t1;
@@ -112,6 +122,8 @@ public class TotalTaxoumputationServiceImpl implements TotalTaxCoumputationServi
 		double t5;
 		
 		t1=pr.getBuildupArea()*compute(pr)*10;
+		
+		
 		t2= t1-(t1*(calDepreciation(pr.getConstructedYear(),pr.getYear())));
 		t3=t2*0.2;
 		t4=t3*0.24;
@@ -119,6 +131,7 @@ public class TotalTaxoumputationServiceImpl implements TotalTaxCoumputationServi
 		ZoneWiseReport z= new ZoneWiseReport();
 		
 //wantedly specifying the only one ID for zonalwisereport
+		
 		List kk=zrepo.findAll();
 		if(kk.size()==0) {
 			z.setId(25);
@@ -139,7 +152,13 @@ public class TotalTaxoumputationServiceImpl implements TotalTaxCoumputationServi
 			
 	}
 	
-	
+	public void savingFormDetails(PropertyTax pp) throws PropertTaxException {
+		
+		if(pp!=null)
+			ptr.save(pp);
+		else
+			throw new PropertTaxException("enter the details to save");
+	}
 
 	
 }

@@ -1,6 +1,11 @@
-package com.epl.Residential_property_System.Exception;
+package com.epl.Residential_property_System.exception;
 
 public class Cat_DescrNotFoundException extends Exception{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public Cat_DescrNotFoundException() {
 
